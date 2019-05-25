@@ -3,6 +3,7 @@ require('chai').should();
 
 const MockIdentityProvider = artifacts.require('MockIdentityProvider');
 const QVT = artifacts.require('QVT');
+const MockDAI = artifacts.require('MockDAI');
 
 const addr2B32 = x => {
   const op = y => (y.length < 64 ? op('0' + y) : '0x' + y);
@@ -13,6 +14,7 @@ contract('MIP', ([owner, alice, bob, carol]) => {
   beforeEach(async () => {
     this.mip = await MockIdentityProvider.new({ from: owner });
     this.qvt = await QVT.new(this.mip.address, { from: owner });
+    this.mdai = await MockDAI.new({ from: owner });
   });
   context('Context MockIdentityProvider', () => {
     it('Should convert addr to b32 correctly', async () => {

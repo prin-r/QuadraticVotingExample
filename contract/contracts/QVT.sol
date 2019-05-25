@@ -2,11 +2,7 @@ pragma solidity 0.5.8;
 
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
-
-interface DataSource {
-  function getQueryPrice() external view returns (uint256);
-  function getAsBool(bytes32 key) external payable returns (bool);
-}
+import "./DataSource";
 
 contract QVT  is Ownable {
     using SafeMath for uint256;
@@ -58,10 +54,6 @@ contract QVT  is Ownable {
             y = z;
             z = x.div(z).add(z).div(2);
         }
-    }
-
-    function getETHBalance() public view returns(uint256) {
-        return address(this).balance;
     }
 
     function getProposalByAddress(address user)
