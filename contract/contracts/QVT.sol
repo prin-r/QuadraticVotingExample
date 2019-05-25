@@ -1,14 +1,14 @@
 pragma solidity 0.5.8;
 
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
-import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
+import "./Feeless.sol";
 
 interface DataSource {
   function getQueryPrice() external view returns (uint256);
   function getAsBool(bytes32 key) external payable returns (bool);
 }
 
-contract QVT  is Ownable {
+contract QVT is Feeless {
     using SafeMath for uint256;
 
     struct Proposal {
@@ -44,12 +44,13 @@ contract QVT  is Ownable {
         proposals.push(proposal);
     }
 
-    modifier requireIdentity() {
+    function() external payable {}
+
+    modifier requireIdentity(address sender) {
+        require(msg.sender == execDelegator || msg.sender == sender);
         require(idp.getAsBool.value(idp.getQueryPrice())(bytes32(uint256(msg.sender))));
         _;
     }
-
-    function() external payable {}
 
     function sqrt(uint x) public pure returns (uint y) {
         uint z = x.add(1).div(2);
@@ -58,10 +59,6 @@ contract QVT  is Ownable {
             y = z;
             z = x.div(z).add(z).div(2);
         }
-    }
-
-    function getETHBalance() public view returns(uint256) {
-        return address(this).balance;
     }
 
     function getProposalByAddress(address user)
@@ -93,7 +90,7 @@ contract QVT  is Ownable {
         powers[user] = power;
     }
 
-    function requestPower() public requireIdentity {
+    function requestPower() public requireIdentity(msg.sender) {
         uint256 sinceLatestRequest = (now).sub(latestPowerRequest[msg.sender]);
         require(sinceLatestRequest > 30);
         latestPowerRequest[msg.sender] = now;
@@ -107,7 +104,7 @@ contract QVT  is Ownable {
         return proposalIds[user] > 0;
     }
 
-    function propose(string memory _link, string memory _description) public requireIdentity {
+    function propose(string memory _link, string memory _description) public requireIdentity(msg.sender) {
         require(!alreadyProposed(msg.sender));
         Proposal memory proposal = Proposal({
             proposer: msg.sender,
@@ -121,7 +118,7 @@ contract QVT  is Ownable {
         proposals.push(proposal);
     }
 
-    function updateProposal(string memory _link, string memory _description) public requireIdentity {
+    function updateProposal(string memory _link, string memory _description) public requireIdentity(msg.sender) {
         require(alreadyProposed(msg.sender));
 
         uint256 pid = proposalIds[msg.sender];
@@ -132,7 +129,7 @@ contract QVT  is Ownable {
         proposals[pid].description = _description;
     }
 
-    function deposit(uint256 pid, uint256 depositAmount) public requireIdentity {
+    function deposit(uint256 pid, uint256 depositAmount) public requireIdentity(msg.sender) {
         require(pid < numProposals());
         require(depositAmount > 0);
         require(depositAmount <= powers[msg.sender]);
@@ -153,7 +150,7 @@ contract QVT  is Ownable {
         proposals[pid].numParticipants = proposals[pid].numParticipants.add(1);
     }
 
-    function withdraw(uint256 pid) public requireIdentity {
+    function withdraw(uint256 pid) public requireIdentity(msg.sender) {
         require(pid < numProposals());
         require(
             proposals[pid].userStake[msg.sender] > 0 &&
