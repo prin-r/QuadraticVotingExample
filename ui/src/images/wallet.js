@@ -27,7 +27,7 @@ export default ({ width, height }) => (
         ry="150"
         fill="#ccac76"
         stroke="none"
-        pointer-events="none"
+        pointerEvents="none"
       />
       <rect
         x="37.5"
@@ -50,7 +50,7 @@ export default ({ width, height }) => (
         ry="23.25"
         fill="#3f2c2b"
         stroke="none"
-        pointer-events="none"
+        pointerEvents="none"
       />
       <rect
         x="43"
@@ -61,7 +61,7 @@ export default ({ width, height }) => (
         ry="21.45"
         fill="#b87333"
         stroke="none"
-        pointer-events="none"
+        pointerEvents="none"
       />
       <rect
         x="140"
@@ -84,7 +84,7 @@ export default ({ width, height }) => (
         ry="9"
         fill="#e3c171"
         stroke="none"
-        pointer-events="none"
+        pointerEvents="none"
       />
       <rect
         x="138"
@@ -95,7 +95,7 @@ export default ({ width, height }) => (
         ry="9"
         fill="#743922"
         stroke="none"
-        pointer-events="none"
+        pointerEvents="none"
       />
       <ellipse
         cx="170"
@@ -114,7 +114,7 @@ export default ({ width, height }) => (
         ry="20"
         fill="#dcd8d2"
         stroke="none"
-        pointer-events="none"
+        pointerEvents="none"
       />
     </g>
   </svg>

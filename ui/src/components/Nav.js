@@ -41,13 +41,13 @@ export default props => {
       width={1}
       style={{ height: '60px' }}
       bg={colors.dim}
-      px="10%"
+      px={[0, '10%']}
     >
       <Flex flex={1}>
         <Logo width="60" height="60" />
       </Flex>
       <Flex
-        flex={1}
+        flex={[10, 1]}
         alignItems="center"
         justifyContent="flex-end"
         style={{ position: 'relative' }}
@@ -57,7 +57,7 @@ export default props => {
             marginRight: '20px',
             color: colors.pale,
             whiteSpace: 'nowrap',
-            width: '30%',
+            width: '200px',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
           }}
@@ -80,7 +80,11 @@ export default props => {
           alignItems="center"
           p="10px"
           bg="white"
-          style={{ borderRadius: '4px', width: '200px', height: '60%' }}
+          style={{
+            borderRadius: '4px',
+            width: window.innerWidth < 640 ? '120%' : '50%',
+            height: '60%',
+          }}
         >
           {balance.pretty()}
         </Flex>

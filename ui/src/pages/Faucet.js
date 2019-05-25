@@ -3,6 +3,7 @@ import { Flex, Text } from 'rebass'
 import colors from '../ui/colors'
 import Loadable from 'react-loadable'
 import Loading from '../components/Loading'
+import { requestPower } from '../api/api'
 
 const Input = Loadable({
   loader: () => import('../components/Input'),
@@ -23,15 +24,6 @@ const Button = Loadable({
 })
 
 export default props => {
-  const getQVT = async () => {
-    const result = await window.web3.eth.sendTransaction({
-      from: '0xeFF5b3f91f030d06bA04133F7d74Fbe5af15E5F7',
-      to: '0xC1b11E986F34323C65bf68bb4A1F706639A4a73F',
-      data: '0xe1ec4daa',
-    })
-    console.log(result)
-  }
-
   return (
     <Flex
       flexDirection="column"
@@ -68,7 +60,7 @@ export default props => {
           ml={['0px', '20px']}
           mt={['30px', '0px']}
           height="55px"
-          onClick={getQVT}
+          onClick={requestPower}
         >
           Give Me QVT
         </Button>
